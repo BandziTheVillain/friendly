@@ -127,7 +127,7 @@ MIDDLEWARE = [
     'allauth.account.middleware.AccountMiddleware'
 ]
      
-ROOT_URLCONF = 'fire_friends.urls'
+ROOT_URLCONF = 'friendly.urls'
 
 TEMPLATES = [
     {
