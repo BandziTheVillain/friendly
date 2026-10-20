@@ -24,7 +24,6 @@ from drf_spectacular.views import (
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path("api/", include("friend_requests.api.urls")),
     path("api/", include("friends.api.urls")),
     path("api/", include("profiles.api.urls")),
@@ -43,4 +42,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += [
+        path("admin/", admin.site.urls),
+    ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -14,6 +14,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,16 +23,22 @@ import os
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-8spc9$!xtvy1bkc39p-(_-bmysxtc!1-nl5%t537g*&)8dw_a(')
+def required_env(name: str) -> str:
+    value = os.environ.get(name)
+    if not value:
+        raise ImproperlyConfigured(f"{name} must be set in .env")
+    return value
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True if os.environ.get("ENV") == "development" else False
 
-if not os.environ.get("ALLOWED_HOSTS"):
-    raise ValueError("ALLOWED HOSTS must be set in .env")
+# SECURITY WARNING: keep the secret key used in production secret!
+# Outside development a missing key is an error, never a silent fallback to a key that's in the repo.
+SECRET_KEY = os.environ.get("SECRET_KEY") or ("django-insecure-dev-only" if DEBUG else None)
+if not SECRET_KEY:
+    raise ImproperlyConfigured("SECRET_KEY must be set in .env")
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(",")
+ALLOWED_HOSTS = required_env("ALLOWED_HOSTS").split(",")
 
 # Application definition
 
@@ -68,6 +75,11 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'DEFAULT_PAGINATION_CLASS': 'core.pagination.StandardResultsSetPagination',
+    # the rates below do nothing without these classes
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
     'DEFAULT_THROTTLE_RATES': {
         "user": "1000/hour",
         "anon": "100/day"
@@ -82,12 +94,13 @@ SPECTACULAR_SETTINGS = {
 }
 
 
-CORS_ALLOWED_ORIGINS = os.environ.get("CORS_ALLOWED_ORIGINS").split(",")
+CORS_ALLOWED_ORIGINS = required_env("CORS_ALLOWED_ORIGINS").split(",")
 
 CORS_ALLOW_CREDENTIALS = True
 
+# short-lived access token; the frontend silently refreshes it via /api/auth/token/refresh/ on a 401
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=7),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=30)
 }
 
@@ -112,7 +125,9 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_KIT = {
-    "USER_SERIALIZER": "users.api.serializers.UserSerializer"
+    "USER_SERIALIZER": "users.api.serializers.UserSerializer",
+    # auth cookies only over HTTPS outside development
+    "AUTH_COOKIE_SECURE": not DEBUG,
 }
 
 MIDDLEWARE = [

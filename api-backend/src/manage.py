@@ -8,7 +8,7 @@ def main():
     """Run administrative tasks."""
     dotenv.load_dotenv()
     
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'fire_friends.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'friendly.settings')
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

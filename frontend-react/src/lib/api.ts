@@ -38,7 +38,7 @@ api.interceptors.response.use(
     }
 
     // Don't try to refresh the refresh request itself
-    if (originalRequest.url?.includes("/auth/refresh/")) {
+    if (originalRequest.url?.includes("/auth/token/refresh/")) {
       return Promise.reject(error)
     }
 
@@ -63,7 +63,7 @@ api.interceptors.response.use(
     isRefreshing = true
 
     try {
-      await api.post("/auth/refresh/")
+      await api.post("/auth/token/refresh/")
 
       processQueue();
 

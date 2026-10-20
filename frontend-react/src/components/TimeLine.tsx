@@ -16,13 +16,17 @@ export default function Timeline({ user } : { user: User }): JSX.Element {
     isLoading, 
     error 
   } = useInfiniteQuery({
+    // user.id keeps one account's cached feed from showing after switching accounts;
+    // invalidating ["user-timeline"] still matches by prefix
     queryKey: [
       "user-timeline",
+      user.id,
     ],
-    queryFn: async () : Promise<APIResponse<Post>> => {
+    queryFn: async ({ pageParam }) : Promise<APIResponse<Post>> => {
+      // the backend always returns the signed-in user's feed
       const res = await api.get("/timeline", {
         params: {
-          user: user.username,
+          page: pageParam,
         }
       });
       return res.data;
