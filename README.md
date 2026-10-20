@@ -1,5 +1,5 @@
-# Friendli (Working Title)
+# Friendly (Working Title)
 
 This is a social networking app with the main goal of creating friendships between users.
 
-Still a work in progress
+*** Still a work in progress Please wait ***
