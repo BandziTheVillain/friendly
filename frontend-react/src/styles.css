@@ -1,0 +1,182 @@
+@import "tailwindcss";
+
+/* ---------- Design tokens ---------- */
+@theme {
+  --font-sans: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --color-ink: #0D0D11;
+  --color-surface: #14141A;
+  --color-surface-2: #1B1B23;
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-muted: rgb(255 255 255 / 0.5);
+
+  --color-flame: #FF3D77;
+  --color-ember: #FF8A3D;
+  --color-violet: #7C5CFF;
+  --color-sky: #7C9DFF;
+  --color-mint: #3DFFC4;
+
+  --animate-fade-up: fade-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+}
+
+/* ---------- Base ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  font-family: var(--font-sans);
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-ink);
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: rgb(255 61 119 / 0.35);
+}
+
+/* Slim scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.12) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-violet);
+  outline-offset: 2px;
+}
+
+.title {
+  font-family: var(--font-display);
+}
+
+/* ---------- Reusable utilities ---------- */
+@utility bg-brand {
+  background-color: var(--color-flame);
+}
+
+@utility card {
+  border-radius: 1.5rem;
+  border: 1px solid var(--color-line);
+  background-color: var(--color-surface);
+}
+
+@utility glass {
+  background-color: rgb(13 13 17 / 0.75);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+@utility field {
+  width: 100%;
+  border-radius: 1rem;
+  border: 1px solid var(--color-line);
+  background-color: var(--color-surface-2);
+  padding: 0.85rem 1rem;
+  font-size: 0.9375rem;
+  color: #fff;
+  transition: border-color 150ms, box-shadow 150ms, background-color 150ms;
+
+  &::placeholder {
+    color: rgb(255 255 255 / 0.35);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: rgb(255 255 255 / 0.3);
+  }
+}
+
+@utility btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  background-color: var(--color-flame);
+  font-weight: 800;
+  color: #fff;
+  transition: transform 150ms, opacity 150ms, filter 150ms;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    filter: brightness(1.08);
+  }
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+@utility btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  border: 1px solid rgb(255 255 255 / 0.14);
+  font-weight: 600;
+  color: rgb(255 255 255 / 0.85);
+  transition: background-color 150ms, border-color 150ms, color 150ms;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background-color: rgb(255 255 255 / 0.06);
+    border-color: rgb(255 255 255 / 0.25);
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@utility page-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--color-line);
+  background-color: rgb(13 13 17 / 0.75);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  padding: 1rem 1.25rem;
+}
+
+/* ---------- Toasts (react-toastify) ---------- */
+:root {
+  --toastify-color-dark: var(--color-surface-2);
+  --toastify-font-family: var(--font-sans);
+  --toastify-color-success: var(--color-mint);
+  --toastify-color-error: var(--color-flame);
+  --toastify-color-progress-dark: var(--color-violet);
+}
+
+.Toastify__toast {
+  border-radius: 1rem;
+  border: 1px solid var(--color-line);
+}
