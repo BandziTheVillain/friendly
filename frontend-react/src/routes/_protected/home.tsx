@@ -15,7 +15,7 @@ function Home() {
       <div className="flex w-full gap-8 py-6">
         <main className="min-w-0 max-w-2xl flex-1">
           <div className="page-header mb-4 rounded-2xl border border-line">
-            <h1 className="text-2xl font-extrabold">Hey {user?.first_name || user?.username} 👋</h1>
+            <h1 className="text-2xl font-extrabold">Hey {user?.first_name || user?.username}</h1>
             <p className="text-sm text-white/50">Here's what your friends have been up to</p>
           </div>
           <Compose />
