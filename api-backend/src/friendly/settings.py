@@ -128,9 +128,17 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
+# In production the frontend and API usually live on different sites, and browsers won't send
+# SameSite=Lax cookies on cross-site requests, so every call after login 401s. "None" (+ Secure,
+# + Partitioned for Chrome's third-party cookie rules) lets them through. If the API is proxied
+# under the frontend's domain, set AUTH_COOKIE_SAMESITE=Lax.
+AUTH_COOKIE_SAMESITE = os.environ.get("AUTH_COOKIE_SAMESITE") or ("Lax" if DEBUG else "None")
+
 AUTH_KIT = {
     "USER_SERIALIZER": "users.api.serializers.UserSerializer",
     "AUTH_COOKIE_SECURE": not DEBUG,
+    "AUTH_COOKIE_SAMESITE": AUTH_COOKIE_SAMESITE,
+    "AUTH_COOKIE_PARTITIONED": AUTH_COOKIE_SAMESITE == "None",
 }
 
 MIDDLEWARE = [
