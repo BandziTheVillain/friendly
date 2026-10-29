@@ -5,6 +5,7 @@ import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { LoaderCircle } from "lucide-react";
 import { AuthShell, FieldLabel } from "@/components/AuthShell";
 import { seo } from "@/lib/seo";
+import { toast } from "react-toastify";
 
 export const Route = createFileRoute("/auth/sign-in")({
     head: () => seo({ title: "Sign in", description: "Sign in to Friendly to catch up with your friends, posts and friend requests.", path: "/auth/sign-in" }),
@@ -30,9 +31,14 @@ function Page() {
             password: ""
         },
         onSubmit: async ({ value }) => {
-            const res = await api.post("/auth/login/", value);
-            login(res.data.user);
-            navigate({ to: "/home" })
+            try {
+                const res = await api.post("/auth/login/", value);
+                login(res.data.user);
+                navigate({ to: "/home" });
+            } catch (err) {
+                console.error(err);
+                toast.error("Invalid username or password");
+            }
         }
     });
 

@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'auth_kit',
     'allauth',           
     'allauth.account',
-    'drf_spectacular'
+    'drf_spectacular',
+    'storages',
 ]
 
 AUTH_USER_MODEL = "users.User"

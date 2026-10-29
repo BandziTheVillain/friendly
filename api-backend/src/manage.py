@@ -4,9 +4,10 @@ import os
 import sys
 import dotenv
 
+dotenv.load_dotenv()
+
 def main():
     """Run administrative tasks."""
-    dotenv.load_dotenv()
     
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'friendly.settings')
     try:
