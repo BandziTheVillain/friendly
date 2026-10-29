@@ -1,16 +1,35 @@
-
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Friendz</title>
+    <meta name="theme-color" content="#0D0D11" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Friendly" />
+    <meta property="og:title" content="Friendly - Hang out with your people" />
+    <meta property="og:description" content="Make friends, share posts and create unique experiences with the people you care about." />
+    <meta property="og:url" content="__SITE_URL__/" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Friendly - Hang out with your people" />
+    <meta name="twitter:description" content="Make friends, share posts and create unique experiences with the people you care about." />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Friendly",
+        "url": "__SITE_URL__/",
+        "description": "Make friends, share posts and create unique experiences with the people you care about."
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
-    <meta name="description" content="Make friends, share posts and create unique experiences">
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=Nunito:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
   </head>
   <body>
+    <noscript>Friendly is a place to make friends, share posts and see what your people are up to. Please enable JavaScript to use it.</noscript>
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -1,6 +1,5 @@
 import { type JSX, useEffect, useRef } from "react";
 import PostMedia from "./Post";
-// import { INITIAL_POSTS } from "@/data/posts"
 // import { useAuthStore } from "@/store/auth";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";

@@ -10,7 +10,6 @@ from .serializers import (
 from .permissions import IsPostAuthorOrReadonly, IsCommentAuthorOrReadonly
 
 class CommentViewset(viewsets.ModelViewSet):
-    # explicit order: UUID pks give no natural order, so pages would otherwise shuffle
     queryset = Comment.objects.select_related("user__profile").order_by("date_created")
     serializer_class = CommentSerializer
     permission_classes = (IsCommentAuthorOrReadonly,)
@@ -36,7 +35,16 @@ class PostViewset(viewsets.ModelViewSet):
     permission_classes = (IsPostAuthorOrReadonly,)
 
     def get_queryset(self):
-        return Post.objects.with_feed_fields()
+        qs = Post.objects.with_feed_fields()
+
+        author = self.request.GET.get("author", None)
+        liked_by = self.request.GET.get("liked_by", None)
+
+        if author:
+            qs = qs.filter(author__username=author)
+        if liked_by:
+            qs = qs.filter(likes__user__username=liked_by)
+        return qs
 
     @action(methods=["POST"], detail=True, permission_classes=[permissions.IsAuthenticated])
     def like(self, request, *args, **kwargs):
@@ -48,7 +56,6 @@ class PostViewset(viewsets.ModelViewSet):
         try:
             like = Like.objects.create(post=post, user=self.request.user)
         except IntegrityError:
-            # a concurrent request (double click) already created it
             like = Like.objects.get(post=post, user=self.request.user)
         like_serializer = LikeSerializer(instance=like, many=False)
         return Response(data={"detail": "You have liked this post", "like": like_serializer.data}, status=201)

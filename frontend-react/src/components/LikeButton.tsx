@@ -19,14 +19,16 @@ export const LikeButton = ({ post }: Props) => {
 
     useEffect(() => {
         const fetchLike = async () => {
-            const res = await api.get(`likes?post=${post.id}&user=${user!.username}`);
-            const data = res.data?.results[0];
-            setLike(data);
+            setIsLoading(true);
+            try {
+                const res = await api.get("/likes/", { params: { post_id: post.id, user: user!.username } });
+                setLike(res.data?.results[0] ?? null);
+            } finally {
+                setIsLoading(false);
+            }
         }
-        setIsLoading(true);
         fetchLike();
-        setIsLoading(false);
-    }, []);
+    }, [post.id]);
 
     const toggleLike = async () => {
         try {

@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/store/auth';
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
+import { seo } from '@/lib/seo';
 
 export const Route = createFileRoute('/_protected')({
   beforeLoad: ({ location }) => {
@@ -10,6 +11,7 @@ export const Route = createFileRoute('/_protected')({
         })
     }
   },
+  head: () => seo({ noindex: true }),
   component: () => <Outlet />,
 })
 

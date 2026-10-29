@@ -7,7 +7,6 @@ interface Props {
     children: React.ReactNode;
 }
 
-/** Centered card layout shared by the sign-in / sign-up screens. */
 export const AuthShell = ({ title, subtitle, children }: Props) => {
     return (
         <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-ink px-4 py-12 text-white">
@@ -16,7 +15,7 @@ export const AuthShell = ({ title, subtitle, children }: Props) => {
                     <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-flame">
                         <FlameIcon className="h-6 w-6" fill="#fff" strokeWidth={1.5} />
                     </span>
-                    <span className="text-xl font-extrabold">FireFriends</span>
+                    <span className="text-xl font-extrabold">Friendly</span>
                 </Link>
 
                 <div className="card p-8">
@@ -25,7 +24,7 @@ export const AuthShell = ({ title, subtitle, children }: Props) => {
                     {children}
                 </div>
 
-                <p className="mt-6 text-center text-xs text-white/30">© 2026 FireFriends</p>
+                <p className="mt-6 text-center text-xs text-white/30">© 2026 Friendly</p>
             </div>
         </div>
     )

@@ -70,7 +70,7 @@ export const Suggested = () => {
         {users.map((user) => <SuggestedUserCard key={user.id} user={user} compact />)}
       </section>
       <Link
-        to="/suggested-friends"
+        to="/connect/suggested-friends"
         className="group mt-3 flex items-center justify-center gap-1.5 rounded-xl py-2 text-sm font-semibold text-flame transition-colors hover:bg-flame/10"
       >
         See more

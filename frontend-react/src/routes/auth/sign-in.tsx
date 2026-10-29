@@ -4,8 +4,10 @@ import { useForm } from "@tanstack/react-form";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { LoaderCircle } from "lucide-react";
 import { AuthShell, FieldLabel } from "@/components/AuthShell";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/auth/sign-in")({
+    head: () => seo({ title: "Sign in", description: "Sign in to Friendly to catch up with your friends, posts and friend requests.", path: "/auth/sign-in" }),
     component: Page,
     beforeLoad: () => {
         const { user } = useAuthStore.getState();

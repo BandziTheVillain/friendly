@@ -1,7 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { FlameIcon, Heart, MessageCircle, UserRoundPlus } from "lucide-react";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/")({
+    head: () => seo({ path: "/" }),
     component: Page,
 })
 
@@ -14,7 +16,7 @@ function Page() {
                         <span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-flame">
                             <FlameIcon className="h-7 w-7" fill="#fff" strokeWidth={1.5} />
                         </span>
-                        <span className="text-2xl font-extrabold">FireFriends</span>
+                        <span className="text-2xl font-extrabold">Friendly</span>
                     </div>
 
                     <h1 className="text-5xl font-black leading-[1.1] sm:text-6xl">
@@ -33,7 +35,7 @@ function Page() {
                         </Link>
                     </div>
 
-                    <p className="mt-12 text-sm text-white/35">© 2026 FireFriends. All rights reserved.</p>
+                    <p className="mt-12 text-sm text-white/35">© 2026 Friendly. All rights reserved.</p>
                 </main>
 
                 {/* Preview card stack */}

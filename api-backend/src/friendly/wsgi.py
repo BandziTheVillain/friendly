@@ -1,5 +1,5 @@
 """
-WSGI config for firefriends project.
+WSGI config for Friendly project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 

@@ -51,7 +51,7 @@ function Page() {
 
     return (
         <Layout>
-            <div className="mx-auto flex h-screen max-w-2xl flex-col py-6">
+            <div className="mx-auto flex h-[calc(100dvh-4rem)] max-w-2xl md:h-screen flex-col py-6">
                 <div className="page-header flex items-center gap-3 rounded-t-2xl border border-line">
                     <button
                         onClick={() => router.history.back()}

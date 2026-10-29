@@ -1,5 +1,5 @@
 """
-ASGI config for firefriends project.
+ASGI config for Friendly project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 

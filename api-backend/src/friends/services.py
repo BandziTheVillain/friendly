@@ -42,7 +42,6 @@ def _make_friends(a, b):
         [Friendship(user=a, friend=b), Friendship(user=b, friend=a)],
         ignore_conflicts=True,
     )
-    # two simple UPDATEs: SQLite's planner errors on an OR'd UPDATE against the partial unique index
     for sender, recipient in ((a, b), (b, a)):
         FriendRequest.objects.filter(
             sender=sender, recepient=recipient, status=FRStatus.PENDING

@@ -13,7 +13,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProtectedRouteImport } from './routes/_protected'
 import { Route as ProtectedDiscoverRouteImport } from './routes/_protected/discover'
 import { Route as ProtectedFriendRequestsRouteImport } from './routes/_protected/friend-requests'
-import { Route as ProtectedHelloRouteImport } from './routes/_protected/hello'
 import { Route as ProtectedHomeRouteImport } from './routes/_protected/home'
 import { Route as ProtectedSuggestedFriendsRouteImport } from './routes/_protected/suggested-friends'
 import { Route as AuthForgotPasswordRouteImport } from './routes/auth/forgot-password'
@@ -21,8 +20,9 @@ import { Route as AuthSignInRouteImport } from './routes/auth/sign-in'
 import { Route as AuthSignupRouteImport } from './routes/auth/signup'
 import { Route as ProtectedConnectFriendRequestsRouteImport } from './routes/_protected/connect/friend-requests'
 import { Route as ProtectedConnectSuggestedFriendsRouteImport } from './routes/_protected/connect/suggested-friends'
-import { Route as ProtectedProfileUsernameRouteImport } from './routes/_protected/profile/$username'
 import { Route as ProtectedPostsIdCommentsRouteImport } from './routes/_protected/posts/$id/comments'
+import { Route as ProtectedProfileUsernameIndexRouteImport } from './routes/_protected/profile/$username/index'
+import { Route as ProtectedProfileUsernameFriendsRouteImport } from './routes/_protected/profile/$username/friends'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -41,11 +41,6 @@ const ProtectedDiscoverRoute = ProtectedDiscoverRouteImport.update({
 const ProtectedFriendRequestsRoute = ProtectedFriendRequestsRouteImport.update({
   id: '/friend-requests',
   path: '/friend-requests',
-  getParentRoute: () => ProtectedRoute,
-} as any)
-const ProtectedHelloRoute = ProtectedHelloRouteImport.update({
-  id: '/hello',
-  path: '/hello',
   getParentRoute: () => ProtectedRoute,
 } as any)
 const ProtectedHomeRoute = ProtectedHomeRouteImport.update({
@@ -86,16 +81,22 @@ const ProtectedConnectSuggestedFriendsRoute =
     path: '/connect/suggested-friends',
     getParentRoute: () => ProtectedRoute,
   } as any)
-const ProtectedProfileUsernameRoute =
-  ProtectedProfileUsernameRouteImport.update({
-    id: '/profile/$username',
-    path: '/profile/$username',
-    getParentRoute: () => ProtectedRoute,
-  } as any)
 const ProtectedPostsIdCommentsRoute =
   ProtectedPostsIdCommentsRouteImport.update({
     id: '/posts/$id/comments',
     path: '/posts/$id/comments',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedProfileUsernameIndexRoute =
+  ProtectedProfileUsernameIndexRouteImport.update({
+    id: '/profile/$username/',
+    path: '/profile/$username/',
+    getParentRoute: () => ProtectedRoute,
+  } as any)
+const ProtectedProfileUsernameFriendsRoute =
+  ProtectedProfileUsernameFriendsRouteImport.update({
+    id: '/profile/$username/friends',
+    path: '/profile/$username/friends',
     getParentRoute: () => ProtectedRoute,
   } as any)
 
@@ -103,7 +104,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/discover': typeof ProtectedDiscoverRoute
   '/friend-requests': typeof ProtectedFriendRequestsRoute
-  '/hello': typeof ProtectedHelloRoute
   '/home': typeof ProtectedHomeRoute
   '/suggested-friends': typeof ProtectedSuggestedFriendsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -111,14 +111,14 @@ export interface FileRoutesByFullPath {
   '/auth/signup': typeof AuthSignupRoute
   '/connect/friend-requests': typeof ProtectedConnectFriendRequestsRoute
   '/connect/suggested-friends': typeof ProtectedConnectSuggestedFriendsRoute
-  '/profile/$username': typeof ProtectedProfileUsernameRoute
   '/posts/$id/comments': typeof ProtectedPostsIdCommentsRoute
+  '/profile/$username/friends': typeof ProtectedProfileUsernameFriendsRoute
+  '/profile/$username/': typeof ProtectedProfileUsernameIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/discover': typeof ProtectedDiscoverRoute
   '/friend-requests': typeof ProtectedFriendRequestsRoute
-  '/hello': typeof ProtectedHelloRoute
   '/home': typeof ProtectedHomeRoute
   '/suggested-friends': typeof ProtectedSuggestedFriendsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -126,8 +126,9 @@ export interface FileRoutesByTo {
   '/auth/signup': typeof AuthSignupRoute
   '/connect/friend-requests': typeof ProtectedConnectFriendRequestsRoute
   '/connect/suggested-friends': typeof ProtectedConnectSuggestedFriendsRoute
-  '/profile/$username': typeof ProtectedProfileUsernameRoute
   '/posts/$id/comments': typeof ProtectedPostsIdCommentsRoute
+  '/profile/$username/friends': typeof ProtectedProfileUsernameFriendsRoute
+  '/profile/$username': typeof ProtectedProfileUsernameIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -135,7 +136,6 @@ export interface FileRoutesById {
   '/_protected': typeof ProtectedRouteWithChildren
   '/_protected/discover': typeof ProtectedDiscoverRoute
   '/_protected/friend-requests': typeof ProtectedFriendRequestsRoute
-  '/_protected/hello': typeof ProtectedHelloRoute
   '/_protected/home': typeof ProtectedHomeRoute
   '/_protected/suggested-friends': typeof ProtectedSuggestedFriendsRoute
   '/auth/forgot-password': typeof AuthForgotPasswordRoute
@@ -143,8 +143,9 @@ export interface FileRoutesById {
   '/auth/signup': typeof AuthSignupRoute
   '/_protected/connect/friend-requests': typeof ProtectedConnectFriendRequestsRoute
   '/_protected/connect/suggested-friends': typeof ProtectedConnectSuggestedFriendsRoute
-  '/_protected/profile/$username': typeof ProtectedProfileUsernameRoute
   '/_protected/posts/$id/comments': typeof ProtectedPostsIdCommentsRoute
+  '/_protected/profile/$username/friends': typeof ProtectedProfileUsernameFriendsRoute
+  '/_protected/profile/$username/': typeof ProtectedProfileUsernameIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -152,7 +153,6 @@ export interface FileRouteTypes {
     | '/'
     | '/discover'
     | '/friend-requests'
-    | '/hello'
     | '/home'
     | '/suggested-friends'
     | '/auth/forgot-password'
@@ -160,14 +160,14 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/connect/friend-requests'
     | '/connect/suggested-friends'
-    | '/profile/$username'
     | '/posts/$id/comments'
+    | '/profile/$username/friends'
+    | '/profile/$username/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/discover'
     | '/friend-requests'
-    | '/hello'
     | '/home'
     | '/suggested-friends'
     | '/auth/forgot-password'
@@ -175,15 +175,15 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/connect/friend-requests'
     | '/connect/suggested-friends'
-    | '/profile/$username'
     | '/posts/$id/comments'
+    | '/profile/$username/friends'
+    | '/profile/$username'
   id:
     | '__root__'
     | '/'
     | '/_protected'
     | '/_protected/discover'
     | '/_protected/friend-requests'
-    | '/_protected/hello'
     | '/_protected/home'
     | '/_protected/suggested-friends'
     | '/auth/forgot-password'
@@ -191,8 +191,9 @@ export interface FileRouteTypes {
     | '/auth/signup'
     | '/_protected/connect/friend-requests'
     | '/_protected/connect/suggested-friends'
-    | '/_protected/profile/$username'
     | '/_protected/posts/$id/comments'
+    | '/_protected/profile/$username/friends'
+    | '/_protected/profile/$username/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -231,13 +232,6 @@ declare module '@tanstack/react-router' {
       path: '/friend-requests'
       fullPath: '/friend-requests'
       preLoaderRoute: typeof ProtectedFriendRequestsRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
-    '/_protected/hello': {
-      id: '/_protected/hello'
-      path: '/hello'
-      fullPath: '/hello'
-      preLoaderRoute: typeof ProtectedHelloRouteImport
       parentRoute: typeof ProtectedRoute
     }
     '/_protected/home': {
@@ -289,18 +283,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedConnectSuggestedFriendsRouteImport
       parentRoute: typeof ProtectedRoute
     }
-    '/_protected/profile/$username': {
-      id: '/_protected/profile/$username'
-      path: '/profile/$username'
-      fullPath: '/profile/$username'
-      preLoaderRoute: typeof ProtectedProfileUsernameRouteImport
-      parentRoute: typeof ProtectedRoute
-    }
     '/_protected/posts/$id/comments': {
       id: '/_protected/posts/$id/comments'
       path: '/posts/$id/comments'
       fullPath: '/posts/$id/comments'
       preLoaderRoute: typeof ProtectedPostsIdCommentsRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/profile/$username/': {
+      id: '/_protected/profile/$username/'
+      path: '/profile/$username'
+      fullPath: '/profile/$username/'
+      preLoaderRoute: typeof ProtectedProfileUsernameIndexRouteImport
+      parentRoute: typeof ProtectedRoute
+    }
+    '/_protected/profile/$username/friends': {
+      id: '/_protected/profile/$username/friends'
+      path: '/profile/$username/friends'
+      fullPath: '/profile/$username/friends'
+      preLoaderRoute: typeof ProtectedProfileUsernameFriendsRouteImport
       parentRoute: typeof ProtectedRoute
     }
   }
@@ -309,25 +310,25 @@ declare module '@tanstack/react-router' {
 interface ProtectedRouteChildren {
   ProtectedDiscoverRoute: typeof ProtectedDiscoverRoute
   ProtectedFriendRequestsRoute: typeof ProtectedFriendRequestsRoute
-  ProtectedHelloRoute: typeof ProtectedHelloRoute
   ProtectedHomeRoute: typeof ProtectedHomeRoute
   ProtectedSuggestedFriendsRoute: typeof ProtectedSuggestedFriendsRoute
   ProtectedConnectFriendRequestsRoute: typeof ProtectedConnectFriendRequestsRoute
   ProtectedConnectSuggestedFriendsRoute: typeof ProtectedConnectSuggestedFriendsRoute
-  ProtectedProfileUsernameRoute: typeof ProtectedProfileUsernameRoute
   ProtectedPostsIdCommentsRoute: typeof ProtectedPostsIdCommentsRoute
+  ProtectedProfileUsernameFriendsRoute: typeof ProtectedProfileUsernameFriendsRoute
+  ProtectedProfileUsernameIndexRoute: typeof ProtectedProfileUsernameIndexRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedDiscoverRoute: ProtectedDiscoverRoute,
   ProtectedFriendRequestsRoute: ProtectedFriendRequestsRoute,
-  ProtectedHelloRoute: ProtectedHelloRoute,
   ProtectedHomeRoute: ProtectedHomeRoute,
   ProtectedSuggestedFriendsRoute: ProtectedSuggestedFriendsRoute,
   ProtectedConnectFriendRequestsRoute: ProtectedConnectFriendRequestsRoute,
   ProtectedConnectSuggestedFriendsRoute: ProtectedConnectSuggestedFriendsRoute,
-  ProtectedProfileUsernameRoute: ProtectedProfileUsernameRoute,
   ProtectedPostsIdCommentsRoute: ProtectedPostsIdCommentsRoute,
+  ProtectedProfileUsernameFriendsRoute: ProtectedProfileUsernameFriendsRoute,
+  ProtectedProfileUsernameIndexRoute: ProtectedProfileUsernameIndexRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(

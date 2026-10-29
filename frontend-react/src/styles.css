@@ -2,8 +2,8 @@
 
 /* ---------- Design tokens ---------- */
 @theme {
-  --font-sans: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-display: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: "Antonio", "Nunito", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: "Antonio", "Nunito", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 
   --color-ink: #0D0D11;
   --color-surface: #14141A;
@@ -11,7 +11,7 @@
   --color-line: rgb(255 255 255 / 0.07);
   --color-muted: rgb(255 255 255 / 0.5);
 
-  --color-flame: #FF3D77;
+  --color-flame: #3D7EFF;
   --color-ember: #FF8A3D;
   --color-violet: #7C5CFF;
   --color-sky: #7C9DFF;
@@ -51,7 +51,7 @@ body {
 }
 
 ::selection {
-  background: rgb(255 61 119 / 0.35);
+  background: rgb(61 126 255 / 0.35);
 }
 
 /* Slim scrollbars */
@@ -172,7 +172,7 @@ body {
   --toastify-color-dark: var(--color-surface-2);
   --toastify-font-family: var(--font-sans);
   --toastify-color-success: var(--color-mint);
-  --toastify-color-error: var(--color-flame);
+  --toastify-color-error: #FF4D5E;
   --toastify-color-progress-dark: var(--color-violet);
 }
 

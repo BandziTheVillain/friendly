@@ -1,7 +1,6 @@
 import React from "react";
 import { MessageCircle, MoreHorizontal } from "lucide-react";
 import { useTimestamp } from "@/hooks/useTimestamp";
-import { CommentForm } from "./CommentForm";
 import { formatCount } from "@/lib/utils";
 import { LikeButton } from "./LikeButton";
 import { Link } from "@tanstack/react-router";
@@ -76,9 +75,6 @@ export default function PostMedia({ post }: PostProps): React.JSX.Element {
             <LikeButton post={post} />
           </div>
         </div>
-      </div>
-      <div className="border-t border-line bg-white/[0.015] px-4 py-3">
-        <CommentForm postID={post.id} />
       </div>
     </article>
   );

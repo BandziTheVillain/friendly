@@ -5,12 +5,14 @@ import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { LoaderCircle } from "lucide-react";
 import { toast } from "react-toastify";
 import { AuthShell, FieldLabel } from "@/components/AuthShell";
+import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/auth/signup")({
+    head: () => seo({ title: "Create your account", description: "Join Friendly for free. Share posts, make new friends and see what your people are up to.", path: "/auth/signup" }),
     component: Page,
     beforeLoad: () => {
-        const { user, isSignedIn } = useAuthStore.getState();
-        if (user || isSignedIn) {
+        const { user } = useAuthStore.getState();
+        if (user) {
             throw redirect({
                 to: "/",
             })
