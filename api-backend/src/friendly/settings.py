@@ -144,6 +144,7 @@ AUTH_KIT = {
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -230,15 +231,30 @@ CLOUDFLARE_R2_BUCKET=os.environ.get("CLOUDFLARE_R2_BUCKET")
 CLOUDFLARE_R2_ACCESS_KEY=os.environ.get("CLOUDFLARE_R2_ACCESS_KEY")
 CLOUDFLARE_R2_SECRET_KEY=os.environ.get("CLOUDFLARE_R2_SECRET_KEY")
 CLOUDFLARE_R2_BUCKET_ENDPOINT=os.environ.get("CLOUDFLARE_R2_BUCKET_ENDPOINT")
+# The bucket's public URL (r2.dev subdomain or custom domain). The S3 endpoint above is private,
+# so without this, media URLs are presigned and expire after an hour.
+CLOUDFLARE_R2_PUBLIC_URL=os.environ.get("CLOUDFLARE_R2_PUBLIC_URL")
 
 CLOUDFLARE_R2_CONFIG_OPTIONS = {
     "bucket_name": CLOUDFLARE_R2_BUCKET,
     "access_key": CLOUDFLARE_R2_ACCESS_KEY,
     "secret_key": CLOUDFLARE_R2_SECRET_KEY,
     "endpoint_url": CLOUDFLARE_R2_BUCKET_ENDPOINT,
-    "default_acl": "public-read",
-    "signature_version": "s3v4"
+    "region_name": "auto",
+    # R2 has no object ACLs; access is controlled per bucket
+    "default_acl": None,
+    "signature_version": "s3v4",
 }
+
+if CLOUDFLARE_R2_PUBLIC_URL:
+    CLOUDFLARE_R2_CONFIG_OPTIONS |= {
+        "custom_domain": CLOUDFLARE_R2_PUBLIC_URL.removeprefix("https://").removeprefix("http://").rstrip("/"),
+        "querystring_auth": False,
+    }
+
+# Static files are served by the app via WhiteNoise (run collectstatic on deploy); media goes to R2.
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 if not DEBUG:
     STORAGES = {
@@ -247,13 +263,11 @@ if not DEBUG:
             "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
         },
         "staticfiles": {
-            "BACKEND": "helpers.cloudflare.storages.StaticFileStorage",
-            "OPTIONS": CLOUDFLARE_R2_CONFIG_OPTIONS
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         }
     }
 
 if DEBUG:
-    STATIC_URL = "/static/"
     MEDIA_URL = "/uploads/"
     MEDIA_ROOT = BASE_DIR / "uploads"
 

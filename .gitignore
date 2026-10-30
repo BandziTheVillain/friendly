@@ -46,7 +46,7 @@ ENV/
 
 # Django media, uploads, and local databases
 # api-backend/src/media/
-# api-backend/src/staticfiles/
+api-backend/src/staticfiles/
 api-backend/src/db.sqlite3
 api-backend/src/db.sqlite3-journal
 

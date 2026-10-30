@@ -1,6 +1,5 @@
 import { type JSX, useEffect, useRef } from "react";
 import PostMedia from "./Post";
-// import { useAuthStore } from "@/store/auth";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { LoaderCircle, Sparkles, TriangleAlert } from "lucide-react";
@@ -15,8 +14,6 @@ export default function Timeline({ user } : { user: User }): JSX.Element {
     isLoading, 
     error 
   } = useInfiniteQuery({
-    // user.id keeps one account's cached feed from showing after switching accounts;
-    // invalidating ["user-timeline"] still matches by prefix
     queryKey: [
       "user-timeline",
       user.id,
@@ -40,29 +37,7 @@ export default function Timeline({ user } : { user: User }): JSX.Element {
     }
   });
 
-  const loadMoreRef = useRef<HTMLDivElement | null>(null)
-
-  // const observerTargetRef = useRef<HTMLDivElement|null>(null);
-
-  // useEffect(() => {
-  //   const target = observerTargetRef.current;
-  //   if (!target) return;
-
-  //   const observer = new IntersectionObserver(
-  //     (entries) => {
-  //       if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-  //         fetchNextPage();
-  //       }
-  //     },
-  //     { 
-  //       threshold: 0.1, 
-  //       rootMargin: '200px' // Proactively fetch next page 200px early
-  //     }
-  //   );
-
-  //   observer.observe(target);
-  //   return () => observer.unobserve(target);
-  // }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const element = loadMoreRef.current;
@@ -85,7 +60,7 @@ export default function Timeline({ user } : { user: User }): JSX.Element {
       observer.disconnect()
     }
 
-  }, [fetchNextPage, hasNextPage, isFetchingNextPage])
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
   
   if (isLoading) {
     return (
@@ -148,18 +123,10 @@ export default function Timeline({ user } : { user: User }): JSX.Element {
 
         {!hasNextPage && (
           <p className="py-8 text-center text-sm font-semibold text-white/40">
-            That's everything for now 🎉
+            That's everything for now
           </p>
         )}
       </div>
-
-      {/* Invisible sentinel tracked by the scroll observer */}
-      {/* <div ref={observerTargetRef} style={{ height: '10px' }} />
-
-      <div style={{ textAlign: 'center', margin: '20px 0', color: '#555' }}>
-        {isFetchingNextPage && <p>Fetching more posts...</p>}
-        {!hasNextPage && <p>No more posts available.</p>}
-      </div> */}
 
     </main>
   );
